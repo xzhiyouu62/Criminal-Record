@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>臺北市自行車竊盜點位查詢系統</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
+    <script src="https://cdn.tailwindcss.com"></script>    <script>
         tailwind.config = {
             theme: {
                 extend: {
@@ -28,193 +27,7 @@
             }
         }
     </script>
-    <style>
-        body {
-            font-family: 'Noto Sans TC', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-        }
-        
-        .glass-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.1);
-        }
-        
-        .menu-item {
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-            border: 1px solid rgba(226, 232, 240, 0.8);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .menu-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-        }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.6);
-            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
-        }
-        
-        .input-field {
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-            background: rgba(255, 255, 255, 0.9);
-        }
-        
-        .input-field:focus {
-            border-color: #3b82f6;
-            background: rgba(255, 255, 255, 1);
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-        }
-        
-        .select-field {
-            background-image: url("data:image/svg+xml;utf8,<svg fill='%233b82f6' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'><path fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd'/></svg>");
-            background-repeat: no-repeat;
-            background-position: right 0.75rem center;
-            background-size: 1.25em;
-        }
-        
-        .result-success {
-            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
-            border-left: 4px solid #3b82f6;
-        }
-        
-        .result-error {
-            background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%);
-            border-left: 4px solid #ef4444;
-        }
-        
-        .icon {
-            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
-        }
-        
-        .floating-elements {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            pointer-events: none;
-            overflow: hidden;
-        }
-        
-        .floating-circle {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            animation: float 6s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(180deg); }
-        }
-          .header-gradient {
-            background: linear-gradient(135deg, #1e40af 0%, #3730a3 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 9999;
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .loading-content {
-            background: white;
-            padding: 2rem;
-            border-radius: 1rem;
-            text-align: center;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
-            backdrop-filter: blur(10px);
-        }
-        
-        .loading-spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid #e2e8f0;
-            border-top: 4px solid #3b82f6;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1rem;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .loading-dots {
-            display: inline-flex;
-            gap: 4px;
-        }
-        
-        .loading-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #3b82f6;
-            animation: loading-bounce 1.4s ease-in-out infinite both;
-        }
-        
-        .loading-dot:nth-child(1) { animation-delay: -0.32s; }
-        .loading-dot:nth-child(2) { animation-delay: -0.16s; }
-        
-        @keyframes loading-bounce {
-            0%, 80%, 100% { 
-                transform: scale(0);
-                opacity: 0.5;
-            } 
-            40% { 
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-        
-        .button-loading {
-            position: relative;
-            pointer-events: none;
-        }
-        
-        .button-loading::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 16px;
-            height: 16px;
-            margin: -8px 0 0 -8px;
-            border: 2px solid transparent;
-            border-top: 2px solid white;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        
-        .button-loading .button-text {
-            opacity: 0;
-        }
-    </style>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body class="relative">
     <div id="loadingOverlay" class="loading-overlay">
@@ -228,96 +41,114 @@
                 <div class="loading-dot"></div>
             </div>
         </div>
-    </div>
-
-    <div class="floating-elements">
-        <div class="floating-circle w-20 h-20 top-20 left-20" style="animation-delay: -1s;"></div>
-        <div class="floating-circle w-16 h-16 top-40 right-32" style="animation-delay: -3s;"></div>
-        <div class="floating-circle w-12 h-12 bottom-32 left-40" style="animation-delay: -5s;"></div>
-        <div class="floating-circle w-24 h-24 bottom-20 right-20" style="animation-delay: -2s;"></div>
+    </div>    <div class="floating-elements">
+        <div class="floating-circle w-24 h-24 top-20 left-20" style="animation-delay: -1s;"></div>
+        <div class="floating-circle w-20 h-20 top-40 right-32" style="animation-delay: -3s;"></div>
+        <div class="floating-circle w-16 h-16 bottom-32 left-40" style="animation-delay: -5s;"></div>
+        <div class="floating-circle w-32 h-32 bottom-20 right-20" style="animation-delay: -2s;"></div>
+        <div class="floating-circle w-12 h-12 top-1/2 left-1/4" style="animation-delay: -4s;"></div>
+        <div class="floating-circle w-28 h-28 top-1/4 right-1/4" style="animation-delay: -6s;"></div>
     </div>
 
     <div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
-        <div class="max-w-4xl w-full">
-            <div class="text-center mb-12 animate-fade-in">
-                <div class="inline-flex items-center justify-center w-20 h-20 bg-white rounded-full shadow-lg mb-6">
-                    <svg class="w-10 h-10 text-blue-600 icon" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
+        <div class="max-w-4xl w-full">            <div class="text-center mb-12 animate-fade-in">
+                <h1 class="text-6xl font-900 header-gradient mb-6 leading-tight">臺北市自行車<br>竊盜點位查詢系統</h1>
+                <p class="text-xl text-white/80 mb-6 max-w-2xl mx-auto leading-relaxed">
+                    此平台提供準確且即時的自行車竊盜統計資訊
+                </p>
+                <div class="flex items-center justify-center space-x-4 text-white/60">
+                    <div class="flex items-center space-x-2">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <span>即時數據</span>
+                    </div>
                 </div>
-                <h1 class="text-5xl font-900 header-gradient mb-4">臺北市自行車竊盜點位查詢系統</h1>
-                <div class="w-24 h-1 bg-white/30 mx-auto mt-4 rounded-full"></div>
             </div>
 
             <div class="glass-card rounded-3xl p-8 animate-slide-up">
                 <div class="grid gap-6 md:grid-cols-2">
                     <!-- 查詢選項 -->
-                    <form method="POST" class="space-y-6">
-                        <!-- 年份查詢 -->
-                        <div class="menu-item p-6 rounded-2xl group">
+                    <form method="POST" class="space-y-6">                        <!-- 年份查詢 -->
+                        <div class="menu-item p-6 rounded-2xl group category-1">
                             <div class="flex items-center mb-4">
-                                <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
-                                    <span class="text-blue-600 font-bold text-sm">1</span>
+                                <div class="number-badge w-10 h-10 rounded-xl flex items-center justify-center mr-4">
+                                    <span class="text-white font-bold">1</span>
                                 </div>
-                                <label class="text-gray-800 font-medium text-lg">查詢某年總案件數</label>
+                                <div>
+                                    <label class="text-gray-800 font-semibold text-lg">查詢某年總案件數</label>
+                                    <p class="text-gray-500 text-sm mt-1">統計指定年份的自行車竊盜案件總數</p>
+                                </div>
                             </div>
                             <div class="flex items-center space-x-3">
                                 <input type="number" name="qyear_1" min="2015" max="2025" 
-                                       class="input-field flex-1 p-3 rounded-xl border-0 outline-none" 
-                                       placeholder="輸入年份 (2015-2025)">                                <button type="submit" name="choice" value="1" 
-                                        class="btn-primary text-white px-6 py-3 rounded-xl font-medium">
-                                    <span class="button-text">查詢</span>
+                                       class="input-field flex-1 p-4 rounded-xl border-0 outline-none font-medium" 
+                                       placeholder="輸入年份 (2015-2025)">
+                                <button type="submit" name="choice" value="1" 
+                                        class="btn-primary text-white px-8 py-4 rounded-xl font-semibold">
+                                    <span class="button-text">開始查詢</span>
                                 </button>
                             </div>
                         </div>
 
                         <!-- 月份查詢 -->
-                        <div class="menu-item p-6 rounded-2xl group">
+                        <div class="menu-item p-6 rounded-2xl group category-2">
                             <div class="flex items-center mb-4">
-                                <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center mr-3">
-                                    <span class="text-green-600 font-bold text-sm">2</span>
+                                <div class="number-badge w-10 h-10 rounded-xl flex items-center justify-center mr-4">
+                                    <span class="text-white font-bold">2</span>
                                 </div>
-                                <label class="text-gray-800 font-medium text-lg">查詢某月總案件數</label>
+                                <div>
+                                    <label class="text-gray-800 font-semibold text-lg">查詢某月總案件數</label>
+                                    <p class="text-gray-500 text-sm mt-1">分析特定月份的案件發生頻率</p>
+                                </div>
                             </div>
                             <div class="flex items-center space-x-3">
                                 <input type="number" name="qmonth_2" min="1" max="12" 
-                                       class="input-field flex-1 p-3 rounded-xl border-0 outline-none" 
-                                       placeholder="輸入月份 (1-12)">                                <button type="submit" name="choice" value="2" 
-                                        class="btn-primary text-white px-6 py-3 rounded-xl font-medium">
-                                    <span class="button-text">查詢</span>
+                                       class="input-field flex-1 p-4 rounded-xl border-0 outline-none font-medium" 
+                                       placeholder="輸入月份 (1-12)">
+                                <button type="submit" name="choice" value="2" 
+                                        class="btn-primary text-white px-8 py-4 rounded-xl font-semibold">
+                                    <span class="button-text">開始查詢</span>
                                 </button>
                             </div>
                         </div>
 
                         <!-- 時段查詢 -->
-                        <div class="menu-item p-6 rounded-2xl group">
+                        <div class="menu-item p-6 rounded-2xl group category-3">
                             <div class="flex items-center mb-4">
-                                <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center mr-3">
-                                    <span class="text-purple-600 font-bold text-sm">3</span>
+                                <div class="number-badge w-10 h-10 rounded-xl flex items-center justify-center mr-4">
+                                    <span class="text-white font-bold">3</span>
                                 </div>
-                                <label class="text-gray-800 font-medium text-lg">查詢某時段總案件數</label>
+                                <div>
+                                    <label class="text-gray-800 font-semibold text-lg">查詢某時段總案件數</label>
+                                    <p class="text-gray-500 text-sm mt-1">掌握不同時段的安全風險程度</p>
+                                </div>
                             </div>
                             <div class="flex items-center space-x-3">
                                 <input type="number" name="qtime_3" min="0" max="23" 
-                                       class="input-field flex-1 p-3 rounded-xl border-0 outline-none" 
-                                       placeholder="輸入小時 (0-23)">                                <button type="submit" name="choice" value="3" 
-                                        class="btn-primary text-white px-6 py-3 rounded-xl font-medium">
-                                    <span class="button-text">查詢</span>
+                                       class="input-field flex-1 p-4 rounded-xl border-0 outline-none font-medium" 
+                                       placeholder="輸入小時 (0-23)">
+                                <button type="submit" name="choice" value="3" 
+                                        class="btn-primary text-white px-8 py-4 rounded-xl font-semibold">
+                                    <span class="button-text">開始查詢</span>
                                 </button>
                             </div>
                         </div>
 
                         <!-- 區域查詢 -->
-                        <div class="menu-item p-6 rounded-2xl group">
+                        <div class="menu-item p-6 rounded-2xl group category-4">
                             <div class="flex items-center mb-4">
-                                <div class="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center mr-3">
-                                    <span class="text-orange-600 font-bold text-sm">4</span>
+                                <div class="number-badge w-10 h-10 rounded-xl flex items-center justify-center mr-4">
+                                    <span class="text-white font-bold">4</span>
                                 </div>
-                                <label class="text-gray-800 font-medium text-lg">查詢某區域總案件數</label>
+                                <div>
+                                    <label class="text-gray-800 font-semibold text-lg">查詢某區域總案件數</label>
+                                    <p class="text-gray-500 text-sm mt-1">了解各行政區的安全狀況分布</p>
+                                </div>
                             </div>
                             <div class="flex items-center space-x-3">
-                                <select name="qzone_4" class="input-field select-field flex-1 p-3 rounded-xl border-0 outline-none appearance-none">
-                                    <option value="" disabled selected>選擇區域</option>
+                                <select name="qzone_4" class="input-field select-field flex-1 p-4 rounded-xl border-0 outline-none appearance-none font-medium">
+                                    <option value="" disabled selected>選擇行政區域</option>
                                     <option value="中正區">中正區</option>
                                     <option value="大同區">大同區</option>
                                     <option value="中山區">中山區</option>
@@ -332,76 +163,86 @@
                                     <option value="文山區">文山區</option>
                                 </select>
                                 <button type="submit" name="choice" value="4" 
-                                        class="btn-primary text-white px-6 py-3 rounded-xl font-medium">
-                                    查詢
+                                        class="btn-primary text-white px-8 py-4 rounded-xl font-semibold">
+                                    開始查詢
                                 </button>
                             </div>
                         </div>
                     </form>
 
-                    <div class="space-y-6">
-                        <form method="POST" class="space-y-6">
-                            <div class="menu-item p-6 rounded-2xl group">
+                    <div class="space-y-6">                        <form method="POST" class="space-y-6">
+                            <div class="menu-item p-6 rounded-2xl group category-5">
                                 <div class="flex items-center mb-4">
-                                    <div class="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center mr-3">
-                                        <span class="text-indigo-600 font-bold text-sm">5</span>
+                                    <div class="number-badge w-10 h-10 rounded-xl flex items-center justify-center mr-4">
+                                        <span class="text-white font-bold">5</span>
                                     </div>
-                                    <label class="text-gray-800 font-medium text-lg">綜合時間分析</label>
+                                    <div>
+                                        <label class="text-gray-800 font-semibold text-lg">綜合時間分析</label>
+                                        <p class="text-gray-500 text-sm mt-1">生成詳細的區域時間統計報告</p>
+                                    </div>
                                 </div>
-                                <p class="text-gray-600 text-sm mb-4">顯示各區在各時間發生的案件數統計</p>
                                 <button type="submit" name="choice" value="5" 
-                                        class="btn-primary text-white px-6 py-3 rounded-xl font-medium w-full">
-                                    產生報告
+                                        class="btn-primary text-white px-6 py-4 rounded-xl font-semibold w-full">
+                                    生成分析報告
                                 </button>
                             </div>
 
                             <!-- 年月查詢 -->
-                            <div class="menu-item p-6 rounded-2xl group">
+                            <div class="menu-item p-6 rounded-2xl group category-6">
                                 <div class="flex items-center mb-4">
-                                    <div class="w-8 h-8 bg-teal-100 rounded-lg flex items-center justify-center mr-3">
-                                        <span class="text-teal-600 font-bold text-sm">6</span>
+                                    <div class="number-badge w-10 h-10 rounded-xl flex items-center justify-center mr-4">
+                                        <span class="text-white font-bold">6</span>
                                     </div>
-                                    <label class="text-gray-800 font-medium text-lg">精確月份查詢</label>
+                                    <div>
+                                        <label class="text-gray-800 font-semibold text-lg">精確月份查詢</label>
+                                        <p class="text-gray-500 text-sm mt-1">查詢特定年月的詳細統計數據</p>
+                                    </div>
                                 </div>
-                                <div class="grid grid-cols-2 gap-3 mb-4">
+                                <div class="grid grid-cols-2 gap-4 mb-4">
                                     <input type="number" name="qyear_6" min="2015" max="2025" 
-                                           class="input-field p-3 rounded-xl border-0 outline-none" 
+                                           class="input-field p-4 rounded-xl border-0 outline-none font-medium" 
                                            placeholder="年份">
                                     <input type="number" name="qmonth_6" min="1" max="12" 
-                                           class="input-field p-3 rounded-xl border-0 outline-none" 
+                                           class="input-field p-4 rounded-xl border-0 outline-none font-medium" 
                                            placeholder="月份">
                                 </div>
                                 <button type="submit" name="choice" value="6" 
-                                        class="btn-primary text-white px-6 py-3 rounded-xl font-medium w-full">
-                                    查詢
+                                        class="btn-primary text-white px-6 py-4 rounded-xl font-semibold w-full">
+                                    精確查詢
                                 </button>
                             </div>
 
                             <!-- 極值分析 -->
                             <div class="grid grid-cols-1 gap-4">
-                                <div class="menu-item p-6 rounded-2xl group">
+                                <div class="menu-item p-6 rounded-2xl group category-7">
                                     <div class="flex items-center mb-4">
-                                        <div class="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center mr-3">
-                                            <span class="text-red-600 font-bold text-sm">7</span>
+                                        <div class="number-badge w-10 h-10 rounded-xl flex items-center justify-center mr-4">
+                                            <span class="text-white font-bold">7</span>
                                         </div>
-                                        <label class="text-gray-800 font-medium">案件最少區域</label>
+                                        <div>
+                                            <label class="text-gray-800 font-semibold">案件最少區域</label>
+                                            <p class="text-gray-500 text-sm mt-1">找出最安全的行政區域</p>
+                                        </div>
                                     </div>
                                     <button type="submit" name="choice" value="7" 
-                                            class="btn-primary text-white px-4 py-2 rounded-lg font-medium w-full text-sm">
-                                        查詢
+                                            class="btn-primary text-white px-4 py-3 rounded-xl font-semibold w-full">
+                                        查詢最安全區域
                                     </button>
                                 </div>
 
-                                <div class="menu-item p-6 rounded-2xl group">
+                                <div class="menu-item p-6 rounded-2xl group category-8">
                                     <div class="flex items-center mb-4">
-                                        <div class="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center mr-3">
-                                            <span class="text-yellow-600 font-bold text-sm">8</span>
+                                        <div class="number-badge w-10 h-10 rounded-xl flex items-center justify-center mr-4">
+                                            <span class="text-white font-bold">8</span>
                                         </div>
-                                        <label class="text-gray-800 font-medium">案件最多區域</label>
+                                        <div>
+                                            <label class="text-gray-800 font-semibold">案件最多區域</label>
+                                            <p class="text-gray-500 text-sm mt-1">識別高風險地區分布</p>
+                                        </div>
                                     </div>
                                     <button type="submit" name="choice" value="8" 
-                                            class="btn-primary text-white px-4 py-2 rounded-lg font-medium w-full text-sm">
-                                        查詢
+                                            class="btn-primary text-white px-4 py-3 rounded-xl font-semibold w-full">
+                                        查詢高風險區域
                                     </button>
                                 </div>
                             </div>
@@ -438,55 +279,30 @@
                             </div>
                         </div>
                     {% endif %}
-                </div>
-
-                <div class="mt-8 pt-6 border-t border-gray-200 text-center">
+                </div>                <div class="mt-10 pt-8 border-t border-gray-200/50 text-center">
+                    <div class="flex items-center justify-center space-x-6 mb-4">
+                        <div class="flex items-center space-x-2 text-gray-600">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+                                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+                            </svg>
+                            <span class="text-sm font-medium">數據來源：臺北市政府開放資料</span>
+                        </div>
+                        <div class="w-1 h-1 bg-gray-400 rounded-full"></div>
+                        <div class="flex items-center space-x-2 text-gray-600">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
+                            </svg>
+                            <span class="text-sm font-medium">最後更新：2025年6月</span>
+                        </div>
+                    </div>
                     <p class="text-gray-500 text-sm">
-                        © 2025 臺北市自行車竊盜點位查詢系統 | 數據來源：臺北市資料大平台
+                        © 2025 臺北市自行車竊盜點位查詢系統 | 專業數據分析平台 | 
+                        <span class="text-indigo-600 font-medium">致力於提升城市安全</span>
                     </p>
                 </div>
             </div>
         </div>
-    </div>    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const inputs = document.querySelectorAll('input, select');
-            inputs.forEach(input => {
-                input.addEventListener('focus', function() {
-                    this.parentElement.parentElement.style.transform = 'translateY(-2px)';
-                });
-                
-                input.addEventListener('blur', function() {
-                    this.parentElement.parentElement.style.transform = 'translateY(0)';
-                });
-            });
-            const forms = document.querySelectorAll('form');
-            const loadingOverlay = document.getElementById('loadingOverlay');
-            
-            forms.forEach(form => {
-                form.addEventListener('submit', function(e) {
-                    const submitButton = e.target.querySelector('button[type="submit"]');
-                    if (submitButton) {
-                        submitButton.classList.add('button-loading');
-                        
-                        setTimeout(() => {
-                            if (loadingOverlay) {
-                                loadingOverlay.style.display = 'flex';
-                            }
-                        }, 100);
-                    }
-                });
-            });
-
-            const buttons = document.querySelectorAll('button');
-            buttons.forEach(button => {
-                button.addEventListener('click', function() {
-                    this.style.transform = 'scale(0.95)';
-                    setTimeout(() => {
-                        this.style.transform = 'scale(1)';
-                    }, 150);
-                });
-            });
-        });
-    </script>
+    </div>    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>
