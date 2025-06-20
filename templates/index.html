@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台北市犯罪資料查詢</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        .menu-item label {
+            font-weight: 500;
+        }
+        .result {
+            transition: all 0.3s ease-in-out;
+        }
+        button:hover {
+            transform: translateY(-1px);
+        }
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;utf8,<svg fill='currentColor' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'><path fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd'/></svg>");
+            background-repeat: no-repeat;
+            background-position: right 0.5rem center;
+            background-size: 1.5em;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+    <div class="max-w-2xl w-full mx-auto p-6 bg-white rounded-lg shadow-lg">
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">台北市犯罪資料查詢系統</h1>
+        <div class="menu space-y-4">
+            <form method="POST" class="space-y-4">
+                <div class="menu-item bg-gray-50 p-4 rounded-md shadow-sm">
+                    <label class="block text-gray-700">1. 查詢某年總案件數 (2015~2025):</label>
+                    <div class="flex items-center space-x-2">
+                        <input type="number" name="qyear_1" min="2015" max="2025" class="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500" placeholder="輸入年份">
+                        <button type="submit" name="choice" value="1" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">查詢</button>
+                    </div>
+                </div>
+                <div class="menu-item bg-gray-50 p-4 rounded-md shadow-sm">
+                    <label class="block text-gray-700">2. 查詢某月總案件數 (1~12):</label>
+                    <div class="flex items-center space-x-2">
+                        <input type="number" name="qmonth_2" min="1" max="12" class="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500" placeholder="輸入月份">
+                        <button type="submit" name="choice" value="2" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">查詢</button>
+                    </div>
+                </div>
+                <div class="menu-item bg-gray-50 p-4 rounded-md shadow-sm">
+                    <label class="block text-gray-700">3. 查詢某時段總案件數 (0~23):</label>
+                    <div class="flex items-center space-x-2">
+                        <input type="number" name="qtime_3" min="0" max="23" class="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500" placeholder="輸入小時">
+                        <button type="submit" name="choice" value="3" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">查詢</button>
+                    </div>
+                </div>
+                <div class="menu-item bg-gray-50 p-4 rounded-md shadow-sm">
+                    <label class="block text-gray-700">4. 查詢某區域總案件數:</label>
+                    <div class="flex items-center space-x-2">
+                        <select name="qzone_4" class="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500">
+                            <option value="" disabled selected>選擇區域</option>
+                            <option value="中正區">中正區</option>
+                            <option value="大同區">大同區</option>
+                            <option value="中山區">中山區</option>
+                            <option value="松山區">松山區</option>
+                            <option value="大安區">大安區</option>
+                            <option value="萬華區">萬華區</option>
+                            <option value="信義區">信義區</option>
+                            <option value="士林區">士林區</option>
+                            <option value="北投區">北投區</option>
+                            <option value="內湖區">內湖區</option>
+                            <option value="南港區">南港區</option>
+                            <option value="文山區">文山區</option>
+                        </select>
+                        <button type="submit" name="choice" value="4" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">查詢</button>
+                    </div>
+                </div>
+                <div class="menu-item bg-gray-50 p-4 rounded-md shadow-sm">
+                    <label class="block text-gray-700">5. 顯示各區在各時間發生的案件數:</label>
+                    <button type="submit" name="choice" value="5" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition w-full">查詢</button>
+                </div>
+                <div class="menu-item bg-gray-50 p-4 rounded-md shadow-sm">
+                    <label class="block text-gray-700">6. 查詢某年某月的案件數:</label>
+                    <div class="flex items-center space-x-2">
+                        <input type="number" name="qyear_6" min="2015" max="2025" class="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500" placeholder="年份">
+                        <input type="number" name="qmonth_6" min="1" max="12" class="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500" placeholder="月份">
+                        <button type="submit" name="choice" value="6" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">查詢</button>
+                    </div>
+                </div>
+                <div class="menu-item bg-gray-50 p-4 rounded-md shadow-sm">
+                    <label class="block text-gray-700">7. 查詢案件最少的區域:</label>
+                    <button type="submit" name="choice" value="7" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition w-full">查詢</button>
+                </div>
+                <div class="menu-item bg-gray-50 p-4 rounded-md shadow-sm">
+                    <label class="block text-gray-700">8. 查詢案件最多的區域:</label>
+                    <button type="submit" name="choice" value="8" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition w-full">查詢</button>
+                </div>
+            </form>
+            {% if error %}
+                <div class="result bg-red-100 text-red-700 p-4 rounded-md shadow-sm">{{ error }}</div>
+            {% endif %}
+            {% if result %}
+                <div class="result bg-blue-100 text-blue-900 p-4 rounded-md shadow-sm">{{ result | safe }}</div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
