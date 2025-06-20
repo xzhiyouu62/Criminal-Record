@@ -1,8 +1,10 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for, session
 import requests
 from collections import defaultdict
+from datetime import datetime
 
 app = Flask(__name__)
+app.secret_key = 'your-secret-key-here'  # 設置 session 需要的密鑰
 
 def GetCrimeData():
     url = "https://data.taipei/api/v1/dataset/adf80a2b-b29d-4fca-888c-bcd26ae314e0"
@@ -133,101 +135,132 @@ def GetDangerZone(data):
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    data = GetCrimeData()
-    if not data:
-        return render_template('index.html', error="無法獲取資料")
-    
-    result = None
     if request.method == 'POST':
-        choice = request.form.get('choice')
-        print(f"Form data: {request.form}")  # Debugging: Log form data
+        data = GetCrimeData()
+        if not data:
+            session['error'] = "無法獲取資料，請稍後再試"
+            return redirect(url_for('result'))
         
-        if choice == '1':
-            try:
+        choice = request.form.get('choice')
+        result = None
+        query_info = None
+        
+        try:
+            if choice == '1':
                 qyear = request.form.get('qyear_1')
                 if not qyear:
                     raise ValueError("年份不能為空")
                 qyear = int(qyear)
                 if 2015 <= qyear <= 2025:
-                    result = f'{qyear} 年總案件數 = {GetYearCount(data, qyear)}'
+                    count = GetYearCount(data, qyear)
+                    result = f'<div class="text-center"><div class="text-4xl font-bold text-blue-600 mb-2">{count:,}</div><div class="text-lg">件自行車竊盜案件</div></div>'
+                    query_info = f'查詢 {qyear} 年的案件總數'
                 else:
-                    result = '年份必須在 2015 到 2025 之間'
-            except (ValueError, TypeError) as e:
-                result = f'請輸入有效的年份: {str(e)}'
-        
-        elif choice == '2':
-            try:
+                    raise ValueError('年份必須在 2015 到 2025 之間')
+            
+            elif choice == '2':
                 qmonth = request.form.get('qmonth_2')
                 if not qmonth:
                     raise ValueError("月份不能為空")
                 qmonth = int(qmonth)
                 if 1 <= qmonth <= 12:
-                    result = f'{qmonth} 月份發生的總案件數 = {GetMonthCount(data, qmonth)}'
+                    count = GetMonthCount(data, qmonth)
+                    result = f'<div class="text-center"><div class="text-4xl font-bold text-blue-600 mb-2">{count:,}</div><div class="text-lg">件自行車竊盜案件</div></div>'
+                    query_info = f'查詢 {qmonth} 月份的案件總數'
                 else:
-                    result = '月份必須在 1 到 12 之間'
-            except (ValueError, TypeError) as e:
-                result = f'請輸入有效的月份: {str(e)}'
-        
-        elif choice == '3':
-            try:
+                    raise ValueError('月份必須在 1 到 12 之間')
+            
+            elif choice == '3':
                 qtime = request.form.get('qtime_3')
                 if not qtime:
                     raise ValueError("時間不能為空")
                 qtime = int(qtime)
                 if 0 <= qtime <= 23:
-                    result = f'{qtime} 點發生的總案件數 = {GetTimeCount(data, qtime)}'
+                    count = GetTimeCount(data, qtime)
+                    result = f'<div class="text-center"><div class="text-4xl font-bold text-blue-600 mb-2">{count:,}</div><div class="text-lg">件自行車竊盜案件</div></div>'
+                    query_info = f'查詢 {qtime} 點時段的案件總數'
                 else:
-                    result = '時間必須在 0 到 23 之間'
-            except (ValueError, TypeError) as e:
-                result = f'請輸入有效的時間: {str(e)}'
-        
-        elif choice == '4':
-            qzone = request.form.get('qzone_4', '').strip()
-            if qzone:
-                count = GetZoneCount(data, qzone)
-                result = f'{qzone} 發生的總案件數 = {count}'
-            else:
-                result = '請輸入有效的區名稱（例如：中山區）'
-        
-        elif choice == '5':
-            c = GetPlaceTimeCounts(data)
-            if c:
-                result = '<ul>' + ''.join([f'<li>{place}：{count} 件案件</li>' for place, count in c]) + '</ul>'
-            else:
-                result = '無資料可顯示'
-        
-        elif choice == '6':
-            try:
+                    raise ValueError('時間必須在 0 到 23 之間')
+            
+            elif choice == '4':
+                qzone = request.form.get('qzone_4', '').strip()
+                if qzone:
+                    count = GetZoneCount(data, qzone)
+                    result = f'<div class="text-center"><div class="text-4xl font-bold text-blue-600 mb-2">{count:,}</div><div class="text-lg">件自行車竊盜案件</div></div>'
+                    query_info = f'查詢 {qzone} 的案件總數'
+                else:
+                    raise ValueError('請選擇一個行政區域')
+            
+            elif choice == '5':
+                c = GetPlaceTimeCounts(data)
+                if c:
+                    result_items = []
+                    for place, count in c:
+                        result_items.append(f'<div class="flex justify-between items-center py-2 border-b border-gray-200"><span class="font-medium">{place}</span><span class="text-blue-600 font-bold">{count:,} 件</span></div>')
+                    result = '<div class="space-y-1">' + ''.join(result_items) + '</div>'
+                    query_info = '各行政區域案件數統計分析'
+                else:
+                    raise ValueError('無資料可顯示')
+            
+            elif choice == '6':
                 qyear = request.form.get('qyear_6')
                 qmonth = request.form.get('qmonth_6')
-                print(f"Option 6 inputs: qyear_6={qyear}, qmonth_6={qmonth}")  # Debugging
                 if not qyear or not qmonth:
                     raise ValueError("年份和月份不能為空")
                 qyear = int(qyear)
                 qmonth = int(qmonth)
                 if 2015 <= qyear <= 2025 and 1 <= qmonth <= 12:
                     count = GetYearMonthCount(data, qyear, qmonth)
-                    result = f'{qyear} 年 {qmonth} 月總案件數 = {count}'
+                    result = f'<div class="text-center"><div class="text-4xl font-bold text-blue-600 mb-2">{count:,}</div><div class="text-lg">件自行車竊盜案件</div></div>'
+                    query_info = f'查詢 {qyear} 年 {qmonth} 月的案件總數'
                 else:
-                    result = '年份必須在 2015 到 2025 之間，月份必須在 1 到 12 之間'
-            except (ValueError, TypeError) as e:
-                result = f'請輸入有效的年份和月份: {str(e)}'
-        
-        elif choice == '7':
-            zones, count = GetSafestZone(data)
-            if zones:
-                result = f'案件最少的地區: {", ".join(zones)}，有 {count} 件'
+                    raise ValueError('年份必須在 2015 到 2025 之間，月份必須在 1 到 12 之間')
+            
+            elif choice == '7':
+                zones, count = GetSafestZone(data)
+                if zones:
+                    zone_list = ', '.join(zones)
+                    result = f'<div class="text-center"><div class="text-2xl font-bold text-green-600 mb-4">{zone_list}</div><div class="text-lg mb-2">案件數最少的區域</div><div class="text-3xl font-bold text-blue-600">{count:,} 件</div></div>'
+                    query_info = '查詢案件數最少的安全區域'
+                else:
+                    raise ValueError('無資料可顯示')
+            
+            elif choice == '8':
+                zones, count = GetDangerZone(data)
+                if zones:
+                    zone_list = ', '.join(zones)
+                    result = f'<div class="text-center"><div class="text-2xl font-bold text-red-600 mb-4">{zone_list}</div><div class="text-lg mb-2">案件數最多的區域</div><div class="text-3xl font-bold text-blue-600">{count:,} 件</div></div>'
+                    query_info = '查詢案件數最多的高風險區域'
+                else:
+                    raise ValueError('無資料可顯示')
+            
             else:
-                result = '無資料可顯示'
-        
-        elif choice == '8':
-            zones, count = GetDangerZone(data)
-            if zones:
-                result = f'案件最多的地區: {", ".join(zones)}，有 {count} 件'
-            else:
-                result = '無資料可顯示'
+                raise ValueError('無效的查詢選項')
+            
+            # 將結果存入 session 並跳轉到結果頁面
+            session['result'] = result
+            session['query_info'] = query_info
+            session['timestamp'] = datetime.now().strftime('%Y年%m月%d日 %H:%M:%S')
+            return redirect(url_for('result'))
+            
+        except (ValueError, TypeError) as e:
+            session['error'] = str(e)
+            return redirect(url_for('result'))
     
-    return render_template('index.html', result=result)
+    return render_template('index.html')
+
+@app.route('/result')
+def result():
+    result = session.pop('result', None)
+    error = session.pop('error', None)
+    query_info = session.pop('query_info', None)
+    timestamp = session.pop('timestamp', datetime.now().strftime('%Y年%m月%d日 %H:%M:%S'))
+    
+    return render_template('result.html', 
+                         result=result, 
+                         error=error, 
+                         query_info=query_info,
+                         timestamp=timestamp)
 
 if __name__ == '__main__':
     app.run(debug=True,port=10000)
