@@ -2,9 +2,10 @@ from flask import Flask, render_template, request, redirect, url_for, session
 import requests
 from collections import defaultdict
 from datetime import datetime
+import pytz
 
 app = Flask(__name__)
-app.secret_key = 'your-secret-key-here'  # 設置 session 需要的密鑰
+app.secret_key = 'nmfoi3hf943fy39'  # 設置 session 需要的密鑰
 
 def GetCrimeData():
     url = "https://data.taipei/api/v1/dataset/adf80a2b-b29d-4fca-888c-bcd26ae314e0"
@@ -251,16 +252,19 @@ def index():
 
 @app.route('/result')
 def result():
+    # 從 session 中獲取結果
+    taipei_tz = pytz.timezone('Asia/Taipei')
+    current_time = datetime.now(taipei_tz)
     result = session.pop('result', None)
     error = session.pop('error', None)
     query_info = session.pop('query_info', None)
-    timestamp = session.pop('timestamp', datetime.now().strftime('%Y年%m月%d日 %H:%M:%S'))
+    formatted_time = current_time.strftime('%Y年%m月%d日 %H:%M:%S')
     
     return render_template('result.html', 
                          result=result, 
                          error=error, 
                          query_info=query_info,
-                         timestamp=timestamp)
+                         timestamp=formatted_time)
 
 if __name__ == '__main__':
     app.run(debug=True,port=10000)
