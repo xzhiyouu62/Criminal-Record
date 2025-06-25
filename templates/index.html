@@ -81,10 +81,10 @@
                                 </div>
                             </div>
                             <div class="flex items-center space-x-3">
-                                <input type="number" name="qyear_1" min="2015" max="2025" 
+                                <input type="number" name="qyear_1" min="2015" max="2025"  id="qyear_1"
                                        class="input-field flex-1 p-4 rounded-xl border-0 outline-none font-medium" 
                                        placeholder="輸入年份 (2015-2025)">
-                                <button type="submit" name="choice" value="1" 
+                                <button type="submit" name="choice" value="1" onclick="return validateInput('qyear_1')"
                                         class="btn-primary text-white px-8 py-4 rounded-xl font-semibold">
                                     <span class="button-text">開始查詢</span>
                                 </button>
@@ -103,10 +103,10 @@
                                 </div>
                             </div>
                             <div class="flex items-center space-x-3">
-                                <input type="number" name="qmonth_2" min="1" max="12" 
+                                <input type="number" name="qmonth_2" min="1" max="12" id="qmonth_2"
                                        class="input-field flex-1 p-4 rounded-xl border-0 outline-none font-medium" 
                                        placeholder="輸入月份 (1-12)">
-                                <button type="submit" name="choice" value="2" 
+                                <button type="submit" name="choice" value="2"  onclick="return validateInput('qmonth_2')"
                                         class="btn-primary text-white px-8 py-4 rounded-xl font-semibold">
                                     <span class="button-text">開始查詢</span>
                                 </button>
@@ -125,10 +125,10 @@
                                 </div>
                             </div>
                             <div class="flex items-center space-x-3">
-                                <input type="number" name="qtime_3" min="0" max="23" 
+                                <input type="number" name="qtime_3" min="0" max="23" id="qtime_3"
                                        class="input-field flex-1 p-4 rounded-xl border-0 outline-none font-medium" 
                                        placeholder="輸入小時 (0-23)">
-                                <button type="submit" name="choice" value="3" 
+                                <button type="submit" name="choice" value="3" onclick="return validateInput('qtime_3')"
                                         class="btn-primary text-white px-8 py-4 rounded-xl font-semibold">
                                     <span class="button-text">開始查詢</span>
                                 </button>
@@ -162,7 +162,7 @@
                                     <option value="南港區">南港區</option>
                                     <option value="文山區">文山區</option>
                                 </select>
-                                <button type="submit" name="choice" value="4" 
+                                <button type="submit" name="choice" value="4" onclick="return validateInput('qzone_4')"
                                         class="btn-primary text-white px-8 py-4 rounded-xl font-semibold">
                                     開始查詢
                                 </button>
@@ -199,14 +199,14 @@
                                     </div>
                                 </div>
                                 <div class="grid grid-cols-2 gap-4 mb-4">
-                                    <input type="number" name="qyear_6" min="2015" max="2025" 
+                                    <input type="number" name="qyear_6" min="2015" max="2025" id="qyear_6"
                                            class="input-field p-4 rounded-xl border-0 outline-none font-medium" 
                                            placeholder="年份">
-                                    <input type="number" name="qmonth_6" min="1" max="12" 
+                                    <input type="number" name="qmonth_6" min="1" max="12" id="qmonth_6"
                                            class="input-field p-4 rounded-xl border-0 outline-none font-medium" 
                                            placeholder="月份">
                                 </div>
-                                <button type="submit" name="choice" value="6" 
+                                <button type="submit" name="choice" value="6" onclick="return validateInput('qyear_6') && validateInput('qmonth_6')"
                                         class="btn-primary text-white px-6 py-4 rounded-xl font-semibold w-full">
                                     精確查詢
                                 </button>
