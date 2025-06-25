@@ -81,3 +81,26 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 200 + (index * 100));
     });
 });
+
+function validateInput(inputId) {
+    const inputElement = document.getElementById(inputId);
+    if (!inputElement) return true;
+    
+    const inputValue = inputElement.value.trim();
+    
+    if (inputValue === "" || inputValue === null) {
+        alert("請填寫必要的輸入欄位");
+        inputElement.focus();
+        
+        inputElement.style.borderColor = '#ef4444';
+        inputElement.style.boxShadow = '0 0 0 4px rgba(239, 68, 68, 0.1)';
+        
+        setTimeout(() => {
+            inputElement.style.borderColor = '';
+            inputElement.style.boxShadow = '';
+        }, 3000);
+        
+        return false;
+    }
+    return true;
+}
